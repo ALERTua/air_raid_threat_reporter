@@ -1,0 +1,20 @@
+name: Manual
+
+on:
+    workflow_dispatch:
+
+jobs:
+    print-name:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Dump github context
+              run:   echo "$GITHUB_CONTEXT"
+              shell: bash
+              env:
+               GITHUB_CONTEXT: ${{ toJson(github) }}
+            - name: get-name
+              run: |
+                  echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
+            - name: print-name
+              run: |
+                  echo "${{ env.REPO_NAME }}"
