@@ -10,7 +10,6 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'  # Running this job only for main branch
 
@@ -19,6 +18,12 @@ jobs:
       run: |
           echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
 
+
+  build-and-publish-latest:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Running this job only for main branch
+
+    steps:
     - uses: actions/checkout@v4
 
     - name: Build and Publish latest Docker image
