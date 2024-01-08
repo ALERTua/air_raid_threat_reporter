@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "threat-reporter"
+version = "0.1.0"
+description = ""
+authors = ["Alexey Rubaseff <alexey.rubasheff@gmail.com>"]
+readme = "README.rst"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+litellm = "*"
+telethon = "*"
+global-logger = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
