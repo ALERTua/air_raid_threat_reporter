@@ -59,4 +59,4 @@ jobs:
           context: .
           push: true
           labels: ${{ steps.meta.outputs.labels }}
-          tags: "${{ env.IMAGE_NAME }}:latest"
+          tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
