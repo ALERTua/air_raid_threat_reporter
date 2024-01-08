@@ -1,9 +1,9 @@
-Kyiv Threat Reporter
+Air Raid Threat Reporter
 ---------------------
 
-Filters air raid Telegram channels by sending each message to Ollama AI for it to evaluate,
-whether the message contains an actual threat to the city.
-Redirects the filtered messages to the requested Telegram chat.
+Filters Telegram air raid threats channels by sending each message to Ollama AI for it to evaluate,
+whether the message contains an actual threat to a city.
+Redirects the filtered messages to a Telegram chat.
 
 
 Preparation
