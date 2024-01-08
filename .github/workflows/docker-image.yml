@@ -25,5 +25,5 @@ jobs:
       uses: VaultVulp/gp-docker-action@latest
       with:
           github-token: ${{ github.token }}
-          image-name: ${{ REPO_NAME }}
+          image-name: ${{ env.REPO_NAME }}
           dockerfile: Dockerfile
