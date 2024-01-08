@@ -25,9 +25,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - id: read-docker-image-identifiers
-        name: Read Docker Image Identifiers
-        run: echo ::set-env name=IMAGE_NAME::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+      - name: downcase github.repository
+        run: |
+          echo "IMAGE_NAME=${{ github.repository }} | tr '[:upper:]' '[:lower:]'" >>${GITHUB_ENV}
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
