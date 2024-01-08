@@ -11,8 +11,8 @@ Preparation
 
 - Deploy https://hub.docker.com/r/ollama/ollama
 - Optionally: Deploy https://github.com/ollama-webui/ollama-webui/pkgs/container/ollama-webui
-- Read through `Modelfile` and use it to create a model via GUI or via CLI.
-  You can replace the city name, obviously.
+- Read through `Modelfile` and use it to create a model via GUI or via CLI, or import it from Ollama Hub https://ollamahub.com/m/alert/ukraine-safety-assistant:latest
+  (You can replace the city name and the base model, obviously.)
 - Fill `.env` from `.env.example`
 
 
