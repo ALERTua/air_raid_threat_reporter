@@ -15,6 +15,12 @@ jobs:
             - name: get-name
               run: |
                   echo "REPO_NAME=$(basename ${{ github.repository }})" >> $GITHUB_ENV
-            - name: print-name
+            - name: print-REPO_NAME
               run: |
                   echo "${{ env.REPO_NAME }}"
+            - name: downcase github.repository
+              run: |
+                echo "IMAGE_NAME=`echo ${{github.repository}} | tr '[:upper:]' '[:lower:]'`" >>${GITHUB_ENV}
+            - name: print-IMAGE_NAME
+              run: |
+                  echo "${{ env.IMAGE_NAME }}"
