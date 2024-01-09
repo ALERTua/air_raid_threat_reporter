@@ -36,8 +36,11 @@ ENV PYTHONPATH="$BASE_DIR:$PYTHONPATH"
 
 FROM python-base as builder-base
 
-RUN apt-get update && \
-    apt-get install -y curl
+RUN \
+    apt-get update \
+    && apt-get install -y curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN --mount=type=cache,target=$CACHE_PATH \
     curl -sSL https://install.python-poetry.org | python -
@@ -61,6 +64,12 @@ CMD ["bash"]
 
 
 FROM python-base as production
+
+RUN \
+    apt-get update \
+    && apt-get install -y --no-install-recommends dumb-init \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
 
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $VIRTUAL_ENV $VIRTUAL_ENV
