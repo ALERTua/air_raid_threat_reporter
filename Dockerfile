@@ -81,4 +81,5 @@ COPY $SOURCE_DIR_NAME ./$SOURCE_DIR_NAME/
 
 VOLUME /data
 
+ENTRYPOINT ["dumb-init", "--"]
 CMD ["sh", "-c", "python -m $SOURCE_DIR_NAME"]
