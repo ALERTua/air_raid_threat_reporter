@@ -1,18 +1,33 @@
 @echo off
 set DOCKER_BUILDKIT=1
 set DOCKER_REGISTRY=registry.alertua.duckdns.org
-set IMAGE_NAME=threat_reporter
+echo DOCKER_REGISTRY: %DOCKER_REGISTRY%
+
+for %%I in ("%~dp0.") do set "IMAGE_NAME=%%~nxI"
+echo IMAGE_NAME: %IMAGE_NAME%
+
 set IMAGE_TAG=latest
+echo IMAGE_TAG: %IMAGE_TAG%
+
 set BUILD_TAG=%DOCKER_REGISTRY%/%IMAGE_NAME%:%IMAGE_TAG%
-set BUILD_PATH=.
+echo BUILD_TAG: %BUILD_TAG%
+
+set "BUILD_PATH=%~dp0"
+echo BUILD_PATH: %BUILD_PATH%
+
 set DOCKER_EXE=docker
 rem set DOCKER_OPTS=--insecure-registry=%DOCKER_REGISTRY%
 set DOCKER_OPTS=--max-concurrent-uploads=10 --max-concurrent-downloads=10
 
-if defined DOCKER_REMOTE (
-    echo docker remote
-) else (
-    echo docker local
+echo DOCKER_REMOTE: %DOCKER_REMOTE%
+
+choice /C YN /m "Proceed?"
+if ["%errorlevel%"] NEQ ["1"] (
+	exit /b
+)
+
+
+if not defined DOCKER_REMOTE (
     set DOCKER_SERVICE=com.docker.service
     where %DOCKER_EXE% >nul || (
         set "DOCKER_EXE=%ProgramFiles%\Docker\Docker\resources\bin\docker.exe"
