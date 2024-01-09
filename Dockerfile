@@ -1,5 +1,7 @@
-# doesn't support 3.12 yet
 FROM python:3.11-slim as python-base
+# doesn't support 3.12 yet
+
+LABEL maintainer="ALERT <alexey.rubasheff@gmail.com>"
 
 ENV \
     BASE_DIR=/app \
