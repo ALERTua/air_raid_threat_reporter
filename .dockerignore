@@ -67,6 +67,8 @@ tests/
 
 # Sphinx documentation
 docs/_build/
+*.rst
+*.md
 
 # PyBuilder
 target/
