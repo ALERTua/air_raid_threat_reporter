@@ -1,5 +1,7 @@
 *.session
 litellm_uuid.txt
+*.cmd
+biome.json
 
 # Git
 .git/
