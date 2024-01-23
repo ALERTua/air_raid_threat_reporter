@@ -20,11 +20,10 @@ if DOTENV_PATH:
 load_dotenv(dotenv_path=DOTENV_PATH or None, verbose=True)
 
 VERBOSE = os.getenv('VERBOSE', False)
-# print(f"VERBOSE: {VERBOSE}")
 VERBOSE = bool(strtobool(str(VERBOSE)))
+print(f"VERBOSE: {VERBOSE}")
 
-if VERBOSE:
-    LOG.set_global_log_level(LOG.Levels.DEBUG)
+LOG.verbose = VERBOSE
 
 LOG.debug('Loading env variables')
 
