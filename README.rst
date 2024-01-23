@@ -24,4 +24,4 @@ Deploy
 
 Github
 ^^^^^^^^
-https://github.com/ALERTua/threat_reporter
+https://github.com/ALERTua/air_raid_threat_reporter
