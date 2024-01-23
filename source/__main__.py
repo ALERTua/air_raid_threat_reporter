@@ -20,6 +20,8 @@ LOG = Log.get_logger()
 
 def ask_assistant(strings: List[str], api_base=env.LLM_API_BASE, model=env.LLM_MODEL) -> Optional[str]:
     messages = [{"content": _, "role": "user"} for _ in strings]
+    # import litellm
+    # litellm.set_verbose = True
     response = completion(
         model=model,
         messages=messages,
@@ -82,12 +84,11 @@ async def main():
     @client.on(events.NewMessage(chats=env.TELEGRAM_CHAT_IDS))
     async def _(event):
         sender = await event.get_sender()
-        me = await event.client.get_me()
-        if sender == me:
-            return
-
         message = event.message.text
-        LOG.debug(f"Received message from {sender.title}:\n{message}\n--------")
+        if message != 'test':
+            me = await event.client.get_me()
+            if sender == me:
+                return
 
         author = getattr(sender, 'title', getattr(sender, 'username'))
         LOG.debug(f"Received message from {author}:\n{message}\n--------")
