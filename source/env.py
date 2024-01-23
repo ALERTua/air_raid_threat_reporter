@@ -7,7 +7,10 @@ from global_logger import Log
 # noinspection PyProtectedMember
 from pip._internal.utils.misc import strtobool
 
-from . import constants
+try:
+    from . import constants
+except:
+    import constants
 
 LOG = Log.get_logger()
 

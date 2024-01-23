@@ -8,7 +8,10 @@ from telethon import events
 from telethon.errors import SessionPasswordNeededError
 from telethon.sync import TelegramClient
 
-from . import env
+try:
+    from . import env
+except:
+    import env
 
 LOG = Log.get_logger()
 
