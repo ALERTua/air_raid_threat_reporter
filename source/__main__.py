@@ -88,6 +88,9 @@ async def main():
 
         message = event.message.text
         LOG.debug(f"Received message from {sender.title}:\n{message}\n--------")
+
+        author = getattr(sender, 'title', getattr(sender, 'username'))
+        LOG.debug(f"Received message from {author}:\n{message}\n--------")
         assistant_response = ask_assistant([message])
         if assistant_response and 'yes' in assistant_response.lower()[:10]:
             await event.message.forward_to(entity=report_chat)
