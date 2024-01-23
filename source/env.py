@@ -12,7 +12,7 @@ try:
 except:
     import constants
 
-LOG = Log.get_logger()
+LOG = Log.get_logger(global_level=True)
 
 DOTENV_PATH = os.getenv('DOTENV_PATH', '').strip()
 LOG.debug(f'ENV DOTENV_PATH: {DOTENV_PATH}')
