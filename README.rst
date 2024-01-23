@@ -19,7 +19,7 @@ Preparation
 Deploy
 ^^^^^^
 - Deploy Dockerfile (or image from `ghcr.io/alertua/air_raid_threat_reporter:latest`) with volume `/data`, put yout `.env` there. Alternatively, fill the Environment Variables.
-- The first launch must be interactive (`-it`), to authenticate and create .session files in the volume folder.
+- The first launch must be interactive (`-it`), to authenticate and create .session files in the volume folder. If the container is already created, then it's `docker start -a ukraine-safety-assistant`
 
 
 Github
