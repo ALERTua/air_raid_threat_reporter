@@ -64,13 +64,13 @@ async def main():
     report_chat = await client.get_entity(report_chat_id)
     LOG.debug(f"Report chat {report_chat_id}: {getattr(report_chat, 'title', getattr(report_chat, 'username'))}")
 
-    LOG.debug(f"Listening for messages in chats {env.TELEGRAM_CHAT_IDS}")
+    LOG.green(f"Listening for messages in chats {env.TELEGRAM_CHAT_IDS}")
 
     @client.on(events.NewMessage(chats=env.TELEGRAM_CHAT_IDS))
     async def _(event):
         sender = await event.get_sender()
         message = event.message.text
-        LOG.info(f"Received message from {sender.title}:\n{message}\n--------")
+        LOG.debug(f"Received message from {sender.title}:\n{message}\n--------")
         assistant_response = ask_assistant([message])
         if assistant_response and 'yes' in assistant_response.lower()[:10]:
             await event.message.forward_to(entity=report_chat)
