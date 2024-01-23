@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import asyncio
 from typing import List, Optional
-
+from pathlib import Path
 from global_logger import Log
 from litellm import completion
 from telethon import events
 from telethon.errors import SessionPasswordNeededError
 from telethon.sync import TelegramClient
+
+DOCKER = Path('/.dockerenv').exists()
 
 try:
     from . import env
@@ -40,10 +42,18 @@ async def setup_telethon(api_id, api_hash, phone_number, session_file='./session
 
         if not await client.is_user_authorized():
             await client.send_code_request(phone_number)
+            if DOCKER:
+                LOG.warning("User interaction is needed. "
+                            "Please attach to the Docker container using 'docker attach container_name'"
+                            " and provide the code you received in Telegram.")
             verification_code = input('Enter the code: ')
             try:
                 await client.sign_in(phone_number, verification_code)
             except SessionPasswordNeededError:
+                if DOCKER:
+                    LOG.warning("User interaction is needed. "
+                                "Please attach to the Docker container using 'docker attach container_name'"
+                                " and provide the 2FA password.")
                 two_step_verif_password = input('Two-step verification is enabled. Please enter your password: ')
                 await client.sign_in(password=two_step_verif_password)
 
