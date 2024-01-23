@@ -81,6 +81,10 @@ async def main():
     @client.on(events.NewMessage(chats=env.TELEGRAM_CHAT_IDS))
     async def _(event):
         sender = await event.get_sender()
+        me = await event.client.get_me()
+        if sender == me:
+            return
+
         message = event.message.text
         LOG.debug(f"Received message from {sender.title}:\n{message}\n--------")
         assistant_response = ask_assistant([message])
