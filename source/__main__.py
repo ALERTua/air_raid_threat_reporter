@@ -35,6 +35,7 @@ def ask_assistant(strings: List[str], api_base=env.LLM_API_BASE, model=env.LLM_M
 
 
 async def setup_telethon(api_id, api_hash, phone_number, session_file='./session'):
+    LOG.debug("Setting up Telethon")
     try:
         client = TelegramClient(str(session_file), api_id, api_hash)
         if not client.is_connected():
@@ -68,7 +69,7 @@ async def main():
     client = await setup_telethon(env.TELEGRAM_API_ID, env.TELEGRAM_API_HASH,
                                   env.TELEGRAM_PHONE, session_path)
     if not client:
-        LOG.error("Error setting up the client.")
+        LOG.error("Error setting up Telethon.")
         return
 
     LOG.green("Telethon client set up successfully.")
