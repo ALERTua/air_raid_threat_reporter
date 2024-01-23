@@ -51,7 +51,6 @@ async def setup_telethon(api_id, api_hash, phone_number, session_file='./session
 
 
 async def main():
-    LOG.verbose = True
     session_path = env.DATA_PATH / 'session'
     client = await setup_telethon(env.TELEGRAM_API_ID, env.TELEGRAM_API_HASH,
                                   env.TELEGRAM_PHONE, session_path)
