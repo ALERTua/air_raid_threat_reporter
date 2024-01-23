@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 import os
+import logging
 from pathlib import Path
 
 from dotenv import load_dotenv
-from global_logger import Log
 # noinspection PyProtectedMember
 from pip._internal.utils.misc import strtobool
 
 try:
+    from . import logger
     from . import constants
 except:
+    import logger
     import constants
 
-LOG = Log.get_logger(global_level=True)
+LOG = logging.getLogger()
 
 DOTENV_PATH = os.getenv('DOTENV_PATH', '').strip()
 LOG.debug(f'ENV DOTENV_PATH: {DOTENV_PATH}')
@@ -25,8 +27,8 @@ load_dotenv(dotenv_path=DOTENV_PATH or None, verbose=True)
 VERBOSE = os.getenv('VERBOSE', False)
 VERBOSE = bool(strtobool(str(VERBOSE)))
 print(f"VERBOSE: {VERBOSE}")
-
-LOG.verbose = VERBOSE
+if VERBOSE:
+    LOG.setLevel(logging.DEBUG)
 
 LOG.debug('Loading env variables')
 

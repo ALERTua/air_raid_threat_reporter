@@ -9,7 +9,6 @@ readme = "README.rst"
 python = ">=3.11,<3.12"
 litellm = "*"
 telethon = "*"
-global-logger = "*"
 
 
 [build-system]

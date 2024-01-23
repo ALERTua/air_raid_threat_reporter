@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import asyncio
 from typing import List, Optional
-
-from global_logger import Log
+import logging
 from litellm import completion
 from telethon import events
 from telethon.errors import SessionPasswordNeededError
@@ -13,7 +12,7 @@ try:
 except:
     import env
 
-LOG = Log.get_logger()
+LOG = logging.getLogger()
 
 
 def ask_assistant(strings: List[str], api_base=env.LLM_API_BASE, model=env.LLM_MODEL) -> Optional[str]:
@@ -61,12 +60,12 @@ async def main():
         LOG.error("Error setting up the client.")
         return
 
-    LOG.green("Telethon client set up successfully.")
+    LOG.info("Telethon client set up successfully.")
     report_chat_id = env.REPORT_CHAT_ID
     report_chat = await client.get_entity(report_chat_id)
     LOG.debug(f"Report chat {report_chat_id}: {getattr(report_chat, 'title', getattr(report_chat, 'username'))}")
 
-    LOG.green(f"Listening for messages in chats {env.TELEGRAM_CHAT_IDS}")
+    LOG.info(f"Listening for messages in chats {env.TELEGRAM_CHAT_IDS}")
 
     @client.on(events.NewMessage(chats=env.TELEGRAM_CHAT_IDS))
     async def _(event):
@@ -78,7 +77,7 @@ async def main():
             await event.message.forward_to(entity=report_chat)
 
     await client.disconnected
-    LOG.yellow("Client disconnected. Exiting")
+    LOG.warning("Client disconnected. Exiting")
 
 
 def checks():
