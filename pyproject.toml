@@ -7,8 +7,8 @@ readme = "README.rst"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-litellm = "*"
-telethon = "*"
+litellm = "^1.20.0"
+telethon = "^1.33.1"
 global-logger = "*"
 
 
