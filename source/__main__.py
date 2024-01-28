@@ -85,14 +85,15 @@ async def main():
     async def _(event):
         sender = await event.get_sender()
         message = event.message.text
-        if message != 'test':
+        if message.startswith('test'):
+            pass
+        elif len(message) < 10:
+            LOG.debug(f"Message too short: {message}. Skipping")
+            return
+        else:
             me = await event.client.get_me()
             if sender == me:
                 return
-
-        if len(message) < 10:
-            LOG.debug(f"Message too short: {message}. Skipping")
-            return
 
         author = getattr(sender, 'title', getattr(sender, 'username'))
         LOG.debug(f"Received message from {author}:\n{message}\n--------")
