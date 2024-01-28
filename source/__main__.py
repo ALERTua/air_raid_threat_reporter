@@ -90,6 +90,10 @@ async def main():
             if sender == me:
                 return
 
+        if len(message) < 10:
+            LOG.debug(f"Message too short: {message}. Skipping")
+            return
+
         author = getattr(sender, 'title', getattr(sender, 'username'))
         LOG.debug(f"Received message from {author}:\n{message}\n--------")
         assistant_response = ask_assistant([message])
