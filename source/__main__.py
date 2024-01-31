@@ -87,7 +87,7 @@ async def main():
         message = event.message.text
         if message.startswith('test'):
             pass
-        elif len(message) < 10:
+        elif len(message) < 30:
             LOG.debug(f"Message too short: {message}. Skipping")
             return
         else:
