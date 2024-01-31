@@ -28,6 +28,7 @@ Here are your answer rules:
 - The first word of your answers must be "Yes" or "No".
 - You are not allowed to use emojis or symbols. Here are the examples of emojis and symbols: 🚀🔴⚠🚀💥
 - Your answers must contain the explanation for your evaluation.
+- You cannot start your answer with "Yes" if the message does not contain any threats.
 
 You receive one or several messages, combine the information in them, double-check the rules and criteria, and answer with one answer.
 """
