@@ -1,4 +1,5 @@
-FROM python:3.12-slim as python-base
+FROM python:3.11-slim as python-base
+# 3.11 until https://github.com/BerriAI/litellm/issues/118 exists
 
 LABEL maintainer="ALERT <alexey.rubasheff@gmail.com>"
 
