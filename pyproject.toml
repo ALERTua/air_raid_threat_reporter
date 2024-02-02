@@ -6,8 +6,8 @@ authors = ["Alexey Rubaseff <alexey.rubasheff@gmail.com>"]
 readme = "README.rst"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.12"
-litellm = "^1.20.0"
+python = "^3.12"
+litellm = "^1.21.0"
 telethon = "^1.33.1"
 global-logger = "*"
 
