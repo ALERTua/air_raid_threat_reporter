@@ -1,5 +1,4 @@
-FROM python:3.11-slim as python-base
-# 3.11 until https://github.com/BerriAI/litellm/issues/118 exists
+FROM python:3.12-slim as python-base
 
 LABEL maintainer="ALERT <alexey.rubasheff@gmail.com>"
 
@@ -50,7 +49,7 @@ WORKDIR $BASE_DIR
 COPY poetry.lock pyproject.toml ./
 
 RUN --mount=type=cache,target=$CACHE_PATH \
-    poetry install --no-root --only main
+    poetry install --no-root --only main --compile
 
 
 FROM builder-base as development
@@ -58,7 +57,7 @@ FROM builder-base as development
 WORKDIR $BASE_DIR
 
 RUN --mount=type=cache,target=$CACHE_PATH \
-    poetry install --no-root
+    poetry install --no-root --compile
 
 CMD ["bash"]
 
