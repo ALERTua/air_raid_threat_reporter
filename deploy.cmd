@@ -1,4 +1,7 @@
 @echo off
+setlocal enabledelayedexpansion enableextensions
+poetry check || exit /b
+
 set DOCKER_BUILDKIT=1
 set DOCKER_REGISTRY=registry.alertua.duckdns.org
 echo DOCKER_REGISTRY: %DOCKER_REGISTRY%
@@ -19,13 +22,14 @@ set DOCKER_EXE=docker
 rem set DOCKER_OPTS=--insecure-registry=%DOCKER_REGISTRY%
 set DOCKER_OPTS=--max-concurrent-uploads=10 --max-concurrent-downloads=10
 
+"%DOCKER_EXE%" --version
+
 echo DOCKER_REMOTE: %DOCKER_REMOTE%
+if defined DOCKER_HOST echo DOCKER_HOST: %DOCKER_HOST%
 
-choice /C YN /m "Proceed?"
-if ["%errorlevel%"] NEQ ["1"] (
-	exit /b
-)
-
+@REM choice /C YN /m "Proceed?"
+@REM if ["%errorlevel%"] NEQ ["1"] exit /b
+timeout /t 5
 
 if not defined DOCKER_REMOTE (
     set DOCKER_SERVICE=com.docker.service
@@ -53,7 +57,7 @@ if not defined DOCKER_REMOTE (
     )
 )
 
-"%DOCKER_EXE%" build -t %BUILD_TAG% %BUILD_PATH% || exit /b
+"%DOCKER_EXE%" build -t %BUILD_TAG% %BUILD_PATH% %* || exit /b
 "%DOCKER_EXE%" push %DOCKER_REGISTRY%/%IMAGE_NAME% || exit /b
 
 @REM net stop %DOCKER_SERVICE% || exit /b
