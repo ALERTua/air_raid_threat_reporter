@@ -75,6 +75,9 @@ LOG.debug(f'ENV TELEGRAM_PHONE {"is set" if TELEGRAM_PHONE else "is not set"}')
 TELEGRAM_API_ID = os.getenv('TELEGRAM_API_ID')
 LOG.debug(f'ENV TELEGRAM_API_ID {"is set" if TELEGRAM_API_ID else "is not set"}')
 
+TELEGRAM_BOT_API_TOKEN = os.getenv('TELEGRAM_BOT_API_TOKEN')
+LOG.debug(f'ENV TELEGRAM_BOT_API_TOKEN {"is set" if TELEGRAM_BOT_API_TOKEN else "is not set"}')
+
 TELEGRAM_API_HASH = os.getenv('TELEGRAM_API_HASH')
 LOG.debug(f'ENV TELEGRAM_API_HASH {"is set" if TELEGRAM_API_HASH else "is not set"}')
 

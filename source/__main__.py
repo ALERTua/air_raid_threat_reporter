@@ -4,9 +4,10 @@ from typing import List, Optional
 from pathlib import Path
 from global_logger import Log
 from litellm import completion
-from telethon import events
+from telethon import events, TelegramClient as TelegramClient_async
+from telethon.types import User
 from telethon.errors import SessionPasswordNeededError
-from telethon.sync import TelegramClient
+from telethon.sync import TelegramClient as TelegramClient_sync
 
 DOCKER = Path('/.dockerenv').exists()
 
@@ -39,7 +40,7 @@ def ask_assistant(strings: List[str], api_base=env.LLM_API_BASE, model=env.LLM_M
 async def setup_telethon(api_id, api_hash, phone_number, session_file='./session'):
     LOG.debug("Setting up Telethon")
     try:
-        client = TelegramClient(str(session_file), api_id, api_hash)
+        client = TelegramClient_sync(str(session_file), api_id, api_hash)
         if not client.is_connected():
             await client.connect()
 
@@ -67,14 +68,22 @@ async def setup_telethon(api_id, api_hash, phone_number, session_file='./session
 
 
 async def main():
-    session_path = env.DATA_PATH / 'session'
+    reader_session_path = env.DATA_PATH / 'session'
     client = await setup_telethon(env.TELEGRAM_API_ID, env.TELEGRAM_API_HASH,
-                                  env.TELEGRAM_PHONE, session_path)
+                                  env.TELEGRAM_PHONE, reader_session_path)
     if not client:
         LOG.error("Error setting up Telethon.")
         return
 
     LOG.green("Telethon client set up successfully.")
+
+    # noinspection PyTypeChecker
+    reporter = None
+    if env.TELEGRAM_BOT_API_TOKEN:
+        client_reporter = TelegramClient_async('bot_session', env.TELEGRAM_API_ID, env.TELEGRAM_API_HASH)
+        # noinspection PyUnresolvedReferences
+        reporter = await client_reporter.start(bot_token=env.TELEGRAM_BOT_API_TOKEN)  # type: TelegramClient_async
+
     report_chat_id = env.REPORT_CHAT_ID
     report_chat = await client.get_entity(report_chat_id)
     LOG.debug(f"Report chat {report_chat_id}: {getattr(report_chat, 'title', getattr(report_chat, 'username'))}")
@@ -83,10 +92,15 @@ async def main():
 
     @client.on(events.NewMessage(chats=env.TELEGRAM_CHAT_IDS))
     async def _(event):
-        sender = await event.get_sender()
+        sender: User = await event.get_sender()
         message = event.message.text
+        if reporter:
+            reporter_me: User = await reporter.get_me()
+            if sender.id == reporter_me.id:
+                return
+
         if message.startswith('test'):
-            pass
+            message = message.replace('test ', '')
         elif len(message) < 30:
             LOG.debug(f"Message too short: {message}. Skipping")
             return
@@ -99,7 +113,12 @@ async def main():
         LOG.debug(f"Received message from {author}:\n{message}\n--------")
         assistant_response = ask_assistant([message])
         if assistant_response and 'yes' in assistant_response.lower()[:10]:
-            await event.message.forward_to(entity=report_chat)
+            if reporter:
+                msg = f"{author}:\n{message}"
+                reporter_chat = await reporter.get_entity(report_chat_id)
+                await reporter.send_message(entity=reporter_chat, message=msg)
+            else:
+                await event.message.forward_to(entity=report_chat)
 
     await client.disconnected
     LOG.yellow("Client disconnected. Exiting")
