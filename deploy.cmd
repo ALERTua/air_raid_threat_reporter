@@ -1,6 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion enableextensions
 poetry check || exit /b
+if not exist poetry.lock poetry lock || exit /b
 
 set DOCKER_BUILDKIT=1
 set DOCKER_REGISTRY=registry.alertua.duckdns.org
@@ -57,6 +58,7 @@ if not defined DOCKER_REMOTE (
     )
 )
 
+"%DOCKER_EXE%" --version
 "%DOCKER_EXE%" build -t %BUILD_TAG% %BUILD_PATH% %* || exit /b
 "%DOCKER_EXE%" push %DOCKER_REGISTRY%/%IMAGE_NAME% || exit /b
 
